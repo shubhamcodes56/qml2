@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+:root {
+  /* Clinical / Doctor Theme (Light Mode) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --border: #e2e8f0;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  /* Medical Accents */
+  --accent-blue: #0284c7;   /* Medical Blue */
+  --accent-teal: #0d9488;   /* Clinical Teal */
+  --accent-purple: #7c3aed; /* QML Highlight */
+  --accent-green: #059669;  /* Normal/Safe */
+  --accent-yellow: #d97706; /* Warning */
+  --accent-red: #dc2626;    /* Critical Alert */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+#root { min-height: 100vh; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }

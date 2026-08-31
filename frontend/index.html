@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QML Analytics Platform</title>
+    <!-- Use Plotly.js for 3D/Heatmap rendering -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="logo">
+            <span class="logo-icon">⚛️</span> QML // QUANTUM STATE ANALYTICS
+        </div>
+        <div class="patient-info">
+            Model: Quantum Entanglement <span>|</span> <span id="currentTime" class="time">00:00:00</span>
+        </div>
+    </header>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('tb-tab')">TB DIAGNOSTIC (16-Qubit)</button>
+        <button class="tab-btn" onclick="switchTab('icu-tab')">LIVE ICU MONITOR (4-Qubit)</button>
+    </div>
+
+    <!-- TAB 1: TB COMPARISON -->
+    <main class="dashboard tab-content active" id="tb-tab">
+        <section class="full-panel">
+            <div class="panel-header">
+                <h2>HEAD-TO-HEAD: CLASSICAL ML VS QUANTUM ML</h2>
+                <button id="btnFetchTB" class="btn btn-primary" onclick="fetchTBPatient()">ANALYZE HIDDEN TIER-1 PATIENT</button>
+            </div>
+            
+            <p class="instruction">
+                Click the button to simulate a <strong>Tier-1 Patient</strong> (early-stage TB where vitals are completely normal). Watch how Classical AI completely misses it, while Quantum Entanglement detects the hidden anomaly.
+            </p>
+
+            <div class="tb-grid">
+                <!-- Patient Vitals Table -->
+                <div class="vitals-table-card">
+                    <h3>Patient Vitals (16 Features)</h3>
+                    <div id="vitalsGrid" class="vitals-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Comparison Cards -->
+                <div class="comparison-cards">
+                    <!-- Classical ML -->
+                    <div class="model-card classical" id="classicalCard">
+                        <h3>Classical Random Forest</h3>
+                        <div class="risk-circle">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress" id="clProgress" cx="60" cy="60" r="54"></circle>
+                            </svg>
+                            <div class="risk-number">
+                                <span id="clValue">0</span><span class="percent">%</span>
+                            </div>
+                        </div>
+                        <div class="diag-badge" id="clDiag">WAITING...</div>
+                    </div>
+                    
+                    <!-- Quantum ML -->
+                    <div class="model-card quantum" id="quantumCard">
+                        <h3>Variational QML (8-Qubit)</h3>
+                        <div class="risk-circle">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="bg" cx="60" cy="60" r="54"></circle>
+                                <circle class="progress" id="qmProgress" cx="60" cy="60" r="54"></circle>
+                            </svg>
+                            <div class="risk-number">
+                                <span id="qmValue">0</span><span class="percent">%</span>
+                            </div>
+                        </div>
+                        <div class="diag-badge" id="qmDiag">WAITING...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Qdrant Semantic Search -->
+            <div class="qdrant-panel">
+                <h3>Qdrant Vector Database: Similar Historical Patients</h3>
+                <div id="qdrantResults" class="qdrant-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- TAB 2: LIVE ICU MONITOR -->
+    <main class="dashboard tab-content" id="icu-tab">
+        <!-- LEFT: Quantum Phase & State Visualization -->
+        <section class="vitals-panel">
+            <div class="panel-header">
+                <h2>QUANTUM HILBERT SPACE</h2>
+                <div class="status-indicator">
+                    <div class="status-dot green" id="classicalStatusDot"></div>
+                    <span id="classicalStatusText">CLASSICAL VITALS: NORMAL</span>
+                </div>
+            </div>
+
+            <div class="quantum-viz-grid">
+                <!-- Density Matrix Heatmap -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <h3>Density Matrix (Coherence)</h3>
+                        <p>Off-diagonal elements show entanglement between vitals</p>
+                    </div>
+                    <div class="plotly-container" id="densityMatrixPlot"></div>
+                </div>
+
+                <!-- Probability Amplitude Landscape -->
+                <div class="q-card">
+                    <div class="q-header">
+                        <h3>Probability Amplitude Landscape</h3>
+                        <p>Interference pattern across 16 basis states</p>
+                    </div>
+                    <div class="plotly-container" id="probabilityPlot"></div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="btnInject" class="btn btn-danger">INJECT MICRO-DRIFT</button>
+                <button id="btnReset" class="btn btn-secondary">RESET PATIENT</button>
+            </div>
+            <p class="instruction">
+                When Micro-Drift is injected, watch how the <strong>Density Matrix</strong> off-diagonals shift violently and the <strong>Interference Pattern</strong> peaks move to the anomaly state, proving QML detects the mathematical correlation drift before any single vital crosses a critical threshold.
+            </p>
+        </section>
+
+        <!-- RIGHT: Algorithm Diagnostics -->
+        <section class="qml-panel">
+            <div class="panel-header qml-header">
+                <h2>ALGORITHM DIAGNOSTICS</h2>
+                <div class="status-indicator">
+                    <div class="status-dot green" id="qmlStatusDot"></div>
+                    <span id="qmlStatusText">QML RISK: LOW</span>
+                </div>
+            </div>
+
+            <!-- Risk Score Widget -->
+            <div class="widget widget-risk" id="riskWidget">
+                <div class="risk-label">PROBABILITY OF SYSTEM FAILURE</div>
+                <div class="risk-circle">
+                    <svg viewBox="0 0 120 120">
+                        <circle class="bg" cx="60" cy="60" r="54"></circle>
+                        <circle class="progress" id="riskProgress" cx="60" cy="60" r="54"></circle>
+                    </svg>
+                    <div class="risk-number">
+                        <span id="riskValue">0</span><span class="percent">%</span>
+                    </div>
+                </div>
+                <div class="severity-badge" id="severityBadge">NORMAL</div>
+            </div>
+
+            <!-- Live Circuit Angles -->
+            <div class="widget circuit-widget">
+                <h3>LIVE CIRCUIT ANGLES (θ)</h3>
+                <p class="subtitle">Angle Embedding (RY Gates)</p>
+                <div class="angle-grid">
+                    <div class="angle-item"><span>Q0 (HR)</span><br><b id="theta0">0.00</b></div>
+                    <div class="angle-item"><span>Q1 (SpO2)</span><br><b id="theta1">0.00</b></div>
+                    <div class="angle-item"><span>Q2 (RR)</span><br><b id="theta2">0.00</b></div>
+                    <div class="angle-item"><span>Q3 (Temp)</span><br><b id="theta3">0.00</b></div>
+                </div>
+            </div>
+
+            <!-- Raw Vitals Feed -->
+            <div class="widget terminal">
+                <div class="terminal-header">
+                    <span>raw_vitals_stream.json</span>
+                </div>
+                <div class="terminal-content" id="terminalOutput">
+                    > Connecting to ICU Stream...<br>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

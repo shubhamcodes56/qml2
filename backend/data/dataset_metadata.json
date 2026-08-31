@@ -1,0 +1,176 @@
+{
+  "version": "3.0-ULTIMATE",
+  "n_samples": 2000,
+  "n_features": 16,
+  "feature_names": [
+    "heart_rate",
+    "spo2",
+    "resp_rate",
+    "temperature",
+    "wbc_count",
+    "esr",
+    "crp",
+    "lymphocyte_pct",
+    "hemoglobin",
+    "albumin",
+    "xray_opacity",
+    "xray_cavity",
+    "xray_nodule",
+    "xray_pleural",
+    "ada_level",
+    "mantoux_mm"
+  ],
+  "feature_specs": {
+    "heart_rate": {
+      "mean": 78.0,
+      "std": 8.0,
+      "lo": 40.0,
+      "hi": 180.0,
+      "unit": "bpm",
+      "medical": "Resting pulse. TB causes sympathetic activation -> mild tachycardia."
+    },
+    "spo2": {
+      "mean": 97.5,
+      "std": 0.8,
+      "lo": 70.0,
+      "hi": 100.0,
+      "unit": "%",
+      "medical": "Oxygen saturation. Pulmonary TB damages alveoli -> subtle desaturation."
+    },
+    "resp_rate": {
+      "mean": 16.0,
+      "std": 2.0,
+      "lo": 8.0,
+      "hi": 40.0,
+      "unit": "breaths/min",
+      "medical": "Breathing rate. Compensatory increase when gas exchange is impaired."
+    },
+    "temperature": {
+      "mean": 36.8,
+      "std": 0.3,
+      "lo": 35.0,
+      "hi": 42.0,
+      "unit": "\u00b0C",
+      "medical": "Core body temp. TB hallmark: low-grade evening fever (37.2-38.0\u00b0C)."
+    },
+    "wbc_count": {
+      "mean": 7.0,
+      "std": 1.5,
+      "lo": 2.0,
+      "hi": 30.0,
+      "unit": "\u00d710\u00b3/\u00b5L",
+      "medical": "White blood cells. Mild leukocytosis in active TB."
+    },
+    "esr": {
+      "mean": 10.0,
+      "std": 5.0,
+      "lo": 0.0,
+      "hi": 120.0,
+      "unit": "mm/hr",
+      "medical": "Erythrocyte Sedimentation Rate. Non-specific inflammation marker. Elevated 40-100+ in active TB."
+    },
+    "crp": {
+      "mean": 2.0,
+      "std": 1.0,
+      "lo": 0.0,
+      "hi": 200.0,
+      "unit": "mg/L",
+      "medical": "C-Reactive Protein. Acute phase reactant. Rises sharply in active infection."
+    },
+    "lymphocyte_pct": {
+      "mean": 30.0,
+      "std": 5.0,
+      "lo": 5.0,
+      "hi": 60.0,
+      "unit": "%",
+      "medical": "Lymphocyte percentage of WBC. TB causes lymphocyte-predominant response, especially in pleural fluid."
+    },
+    "hemoglobin": {
+      "mean": 13.5,
+      "std": 1.2,
+      "lo": 5.0,
+      "hi": 20.0,
+      "unit": "g/dL",
+      "medical": "Oxygen-carrying protein. Chronic TB causes anemia of chronic disease (normocytic normochromic)."
+    },
+    "albumin": {
+      "mean": 4.0,
+      "std": 0.4,
+      "lo": 1.0,
+      "hi": 5.5,
+      "unit": "g/dL",
+      "medical": "Serum albumin. Drops in chronic TB due to malnutrition, liver stress, and protein wasting."
+    },
+    "xray_opacity": {
+      "mean": 0.08,
+      "std": 0.04,
+      "lo": 0.0,
+      "hi": 1.0,
+      "unit": "CNN score",
+      "medical": "Overall lung opacity/haziness. Infiltrates, consolidation, fibrosis. Upper lobe predominance in reactivation TB."
+    },
+    "xray_cavity": {
+      "mean": 0.04,
+      "std": 0.025,
+      "lo": 0.0,
+      "hi": 1.0,
+      "unit": "CNN score",
+      "medical": "Cavitation presence. Hallmark of active pulmonary TB. Indicates high bacterial load and infectiousness."
+    },
+    "xray_nodule": {
+      "mean": 0.06,
+      "std": 0.03,
+      "lo": 0.0,
+      "hi": 1.0,
+      "unit": "CNN score",
+      "medical": "Micronodular pattern. Miliary TB: random 1-3mm nodules throughout both lungs. Hematogenous spread."
+    },
+    "xray_pleural": {
+      "mean": 0.05,
+      "std": 0.025,
+      "lo": 0.0,
+      "hi": 1.0,
+      "unit": "CNN score",
+      "medical": "Pleural effusion/thickening. Common in primary TB and TB pleurisy. Often unilateral."
+    },
+    "ada_level": {
+      "mean": 15.0,
+      "std": 8.0,
+      "lo": 0.0,
+      "hi": 150.0,
+      "unit": "U/L",
+      "medical": "Adenosine Deaminase. THE gold standard biomarker for TB pleural effusion. >40 U/L highly suggestive of TB."
+    },
+    "mantoux_mm": {
+      "mean": 5.0,
+      "std": 4.0,
+      "lo": 0.0,
+      "hi": 30.0,
+      "unit": "mm",
+      "medical": "Tuberculin Skin Test (TST) induration. >10mm in immunocompetent = positive. >5mm in HIV+ = positive."
+    }
+  },
+  "tier_counts": {
+    "0": 600,
+    "1": 300,
+    "2": 300,
+    "3": 300,
+    "4": 200,
+    "5": 200,
+    "6": 100
+  },
+  "tier_descriptions": {
+    "0": "Completely Healthy",
+    "1": "Ultra-Subtle (QML-only detectable)",
+    "2": "Very Subtle (QML >> Classical ML)",
+    "3": "Subtle (QML > Classical ML)",
+    "4": "Moderate (both detect, QML faster)",
+    "5": "Clear clinical presentation",
+    "6": "Severe/Advanced TB"
+  },
+  "stratification": {
+    "age": "Bimodal (peaks at 30 and 58), range 18-90",
+    "gender": "60% male, 40% female",
+    "comorbidities": "15% diabetes, 5% HIV"
+  }
+}

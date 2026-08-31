@@ -1,0 +1,299 @@
+:root {
+    --bg-dark: #0a0a0c;
+    --bg-panel: #141418;
+    --border-color: #333;
+    
+    --neon-green: #00ff88;
+    --neon-blue: #00ccff;
+    --neon-purple: #b055ff;
+    --neon-red: #ff2244;
+    --neon-yellow: #ffcc00;
+    
+    --text-main: #f0f0f0;
+    --text-muted: #888;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+h2, h3 {
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+.btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 rgba(255,255,255,0.1);
+}
+.btn-danger { border-color: var(--neon-red); color: var(--neon-red); }
+.btn-danger:hover { background: rgba(255,34,68,0.1); box-shadow: 4px 4px 0 var(--neon-red); }
+.btn-secondary { border-color: var(--text-muted); }
+
+/* Header */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--bg-panel);
+    border-bottom: 2px solid var(--border-color);
+}
+.logo { font-size: 1.2rem; font-weight: 800; color: var(--neon-blue); }
+.patient-info { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); }
+
+/* Layout */
+.dashboard {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+.vitals-panel {
+    flex: 2.5;
+    padding: 24px;
+    border-right: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+.qml-panel {
+    flex: 1;
+    padding: 24px;
+    background: rgba(20, 20, 24, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.qml-header h2 { color: var(--neon-purple); }
+
+.status-indicator { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 700; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; }
+.status-dot.green { background: var(--neon-green); box-shadow: 0 0 8px var(--neon-green); }
+.status-dot.red { background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
+.status-dot.yellow { background: var(--neon-yellow); box-shadow: 0 0 8px var(--neon-yellow); }
+
+/* Quantum Grid */
+.quantum-viz-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    margin-bottom: 24px;
+}
+.q-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+.q-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.q-header h3 { font-size: 1rem; color: var(--neon-blue); }
+.q-header p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+.plotly-container {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    background: #000;
+}
+
+.controls { display: flex; gap: 16px; margin-bottom: 12px; }
+.instruction { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+
+/* Widgets */
+.widget { background: var(--bg-panel); border: 2px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+
+.widget-risk { text-align: center; }
+.risk-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+.risk-circle { position: relative; width: 120px; height: 120px; margin: 0 auto 16px; }
+.risk-circle svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.risk-circle circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.risk-circle .bg { stroke: var(--border-color); }
+.risk-circle .progress { stroke: var(--neon-blue); stroke-dasharray: 339.292; stroke-dashoffset: 339.292; transition: stroke-dashoffset 0.5s ease; }
+.risk-number { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 800; }
+.severity-badge { padding: 4px 12px; border: 1px solid var(--neon-blue); color: var(--neon-blue); border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+
+.severity-CRITICAL .progress { stroke: var(--neon-red); }
+.severity-CRITICAL .severity-badge { border-color: var(--neon-red); color: var(--neon-red); background: rgba(255,34,68,0.1); }
+.severity-WARNING .progress { stroke: var(--neon-yellow); }
+.severity-WARNING .severity-badge { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+
+.circuit-widget { width: 100%; align-items: flex-start; }
+.circuit-widget h3 { font-size: 0.9rem; color: var(--text-muted); }
+.circuit-widget .subtitle { font-size: 0.75rem; color: #555; margin-bottom: 16px; }
+.angle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+.angle-item { background: rgba(0,204,255,0.1); border: 1px solid rgba(0,204,255,0.3); padding: 8px; text-align: center; border-radius: 4px; }
+.angle-item span { font-size: 0.7rem; color: var(--neon-blue); text-transform: uppercase;}
+.angle-item b { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #fff; }
+
+.terminal { align-items: flex-start; padding: 0; flex: 1; min-height: 150px; width: 100%; }
+.terminal-header { background: #222; width: 100%; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #888; border-bottom: 1px solid var(--border-color); }
+.terminal-content { padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #aaa; line-height: 1.4; overflow-y: auto; width: 100%; height: 100%; }
+/* =========================================
+   NEW TAB UI & COMPARISON STYLES
+   ========================================= */
+.tab-nav {
+    display: flex;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    padding: 0 2rem;
+}
+.tab-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    padding: 1rem 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+.tab-btn:hover {
+    color: #fff;
+    background: #1e293b;
+}
+.tab-btn.active {
+    color: #38bdf8;
+    border-bottom-color: #38bdf8;
+    background: #1e293b;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: grid;
+}
+
+/* TB Panel */
+.full-panel {
+    grid-column: 1 / -1;
+    background: #0f172a;
+    padding: 2rem;
+    border-right: none;
+}
+.tb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+.vitals-table-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+.vitals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.vital-box {
+    background: #0f172a;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 3px solid #10b981;
+}
+.vital-box.warning { border-left-color: #f59e0b; }
+.vital-box span {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+.vital-box b {
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+/* Comparison Cards */
+.comparison-cards {
+    display: flex;
+    gap: 1.5rem;
+}
+.model-card {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.model-card h3 {
+    margin-bottom: 1.5rem;
+    color: #cbd5e1;
+}
+.model-card.classical {
+    border-top: 4px solid #94a3b8;
+}
+.model-card.quantum {
+    border-top: 4px solid #8b5cf6;
+}
+.diag-badge {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 700;
+    background: #334155;
+    color: #94a3b8;
+}
+.diag-badge.healthy { background: rgba(16,185,129,0.2); color: #10b981; }
+.diag-badge.danger { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; box-shadow: 0 0 15px rgba(239,68,68,0.4); }
+
+/* Qdrant Panel */
+.qdrant-panel {
+    margin-top: 2rem;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+.qdrant-grid {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.qdrant-card {
+    flex: 1;
+    background: #0f172a;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #38bdf8;
+    border-left: 4px solid #38bdf8;
+}

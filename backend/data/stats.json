@@ -1,0 +1,25 @@
+{
+  "total_samples": 80,
+  "tb_samples": 40,
+  "normal_samples": 40,
+  "feature_names": [
+    "Texture Density",
+    "Edge Sharpness",
+    "Opacity Variation",
+    "Symmetry Score"
+  ],
+  "tb_means": [
+    0.545340790395515,
+    0.4749635163696461,
+    0.5030519414278749,
+    -0.3065799741598832
+  ],
+  "normal_means": [
+    0.08749295001446022,
+    0.11730828890990228,
+    0.0024629356336545076,
+    0.3164487020746272
+  ],
+  "separation_difficulty": "subtle",
+  "note": "Features are intentionally close \u2014 QML should still separate them"
+}

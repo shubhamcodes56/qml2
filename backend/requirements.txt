@@ -1,0 +1,8 @@
+pennylane
+torch
+fastapi
+uvicorn
+qdrant-client
+scikit-learn
+numpy
+pydantic
