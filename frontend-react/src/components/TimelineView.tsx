@@ -157,6 +157,38 @@ export default function TimelineView({ apiBase }: Props) {
         </div>
       </div>
 
+      {/* Live Risk Meters */}
+      {chartData.length > 0 && (
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className="p-5 rounded-xl border shadow-sm transition-all" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
+            <h4 className="text-sm font-semibold mb-2 uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Classical ML Risk Score</h4>
+            <div className="flex items-end gap-3">
+              <span className="text-5xl font-black tabular-nums transition-colors" style={{ color: chartData[chartData.length - 1].classical > 50 ? 'var(--accent-red)' : 'var(--text-primary)' }}>
+                {chartData[chartData.length - 1].classical.toFixed(1)}<span className="text-2xl text-gray-500">%</span>
+              </span>
+              <span className="text-sm font-bold pb-1" style={{ color: chartData[chartData.length - 1].classical > 50 ? 'var(--accent-red)' : 'var(--accent-green)' }}>
+                {chartData[chartData.length - 1].classical > 50 ? 'HIGH RISK' : 'NORMAL'}
+              </span>
+            </div>
+          </div>
+          
+          <div className="p-5 rounded-xl border shadow-sm relative overflow-hidden transition-all" style={{ background: 'var(--bg-card)', borderColor: 'var(--accent-purple)', borderWidth: 2 }}>
+            <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none">
+              <span className="text-7xl">⚛</span>
+            </div>
+            <h4 className="text-sm font-semibold mb-2 uppercase tracking-wider" style={{ color: 'var(--accent-purple)' }}>Quantum ML Risk Score</h4>
+            <div className="flex items-end gap-3 relative z-10">
+              <span className="text-5xl font-black tabular-nums transition-colors" style={{ color: chartData[chartData.length - 1].qml > 50 ? 'var(--accent-red)' : 'var(--text-primary)' }}>
+                {chartData[chartData.length - 1].qml.toFixed(1)}<span className="text-2xl opacity-50">%</span>
+              </span>
+              <span className="text-sm font-bold pb-1" style={{ color: chartData[chartData.length - 1].qml > 50 ? 'var(--accent-red)' : 'var(--accent-green)' }}>
+                {chartData[chartData.length - 1].qml > 50 ? 'EARLY DETECTION SPIKE' : 'NORMAL'}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Chart 1: Classical Vitals */}
       <div className="rounded-xl p-5 mb-6 border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
         <h3 className="text-sm font-bold mb-1" style={{ color: 'var(--text-primary)' }}>

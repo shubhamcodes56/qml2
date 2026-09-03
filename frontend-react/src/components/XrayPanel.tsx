@@ -127,6 +127,21 @@ export default function XrayPanel({ onUpload, result }: Props) {
             </div>
           )}
 
+          {/* Gemini AI Report */}
+          {result?.gemini_report && (
+            <div className="mb-4 p-4 rounded-xl shadow-sm" style={{ background: '#f8fafc', border: '1px solid #e2e8f0' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">✨</span>
+                <p className="text-sm font-bold text-slate-800">
+                  AI Pulmonologist Diagnostic Report
+                </p>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed italic">
+                "{result.gemini_report}"
+              </p>
+            </div>
+          )}
+
           {/* Findings */}
           {findings.length > 0 && (
             <div>
@@ -184,63 +199,15 @@ export default function XrayPanel({ onUpload, result }: Props) {
 
           {/* Zoomed Zone View */}
           {selectedZone && selectedZone.zone_image_b64 && (
-            <div className="mt-4 p-4 rounded-xl border" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
-                  Zone {selectedZone.zone_id} Deep Analysis
-                </h4>
-                <button 
-                  onClick={() => setSelectedZone(null)}
-                  className="text-xs font-bold" 
-                  style={{ color: 'var(--text-muted)' }}
-                >
-                  ✕
-                </button>
-              </div>
-              
-              <div className="flex gap-4">
-                <img 
-                  src={`data:image/png;base64,${selectedZone.zone_image_b64}`} 
-                  alt={`Zone ${selectedZone.zone_id}`}
-                  className="rounded-lg border shadow-sm"
-                  style={{ width: '120px', height: '120px', objectFit: 'cover', borderColor: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--border)' }}
-                />
-                
-                <div className="flex-1 space-y-2">
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded bg-white border">
-                      <span className="block text-gray-500">Mean Opacity</span>
-                      <strong style={{ color: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--text-primary)' }}>
-                        {(selectedZone.mean_intensity * 100).toFixed(1)}%
-                      </strong>
-                    </div>
-                    <div className="p-2 rounded bg-white border">
-                      <span className="block text-gray-500">Max Intensity</span>
-                      <strong>{(selectedZone.max_intensity * 100).toFixed(1)}%</strong>
-                    </div>
-                  </div>
-                  
-                  <p className="text-xs p-2 rounded" style={{ background: selectedZone.mean_intensity > 0.55 ? '#fee2e2' : '#f1f5f9', color: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--text-secondary)' }}>
-                    {selectedZone.mean_intensity > 0.55 
-                      ? '⚠️ High opacity detected in this quadrant. Classical thresholds often miss early density changes here, but the quantum model flagged it based on localized mean intensity vs global background.'
-                      : '✅ Zone appears clear. Opacity within normal baseline limits.'}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Zoomed Zone View */}
-          {selectedZone && selectedZone.zone_image_b64 && (
             <div className="mt-4 p-4 rounded-xl border shadow-sm" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
               <div className="flex justify-between items-start mb-3">
                 <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
-                  Zone {selectedZone.zone_id} Deep Analysis
+                  🔬 Zone {selectedZone.zone_id} — Actual QML Deep Analysis
                 </h4>
                 <button 
                   onClick={() => setSelectedZone(null)}
-                  className="text-xs font-bold" 
-                  style={{ color: 'var(--text-muted)' }}
+                  className="text-xs font-bold px-2 py-1 rounded" 
+                  style={{ color: 'var(--text-muted)', background: 'var(--bg-secondary)' }}
                 >
                   ✕
                 </button>
@@ -251,28 +218,78 @@ export default function XrayPanel({ onUpload, result }: Props) {
                   src={`data:image/png;base64,${selectedZone.zone_image_b64}`} 
                   alt={`Zone ${selectedZone.zone_id}`}
                   className="rounded-lg border shadow-sm"
-                  style={{ width: '120px', height: '120px', objectFit: 'cover', borderColor: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--border)' }}
+                  style={{ width: '120px', height: '120px', objectFit: 'cover', borderColor: selectedZone.qml_zone_risk > 50 ? 'var(--accent-red)' : 'var(--border)' }}
                 />
                 
                 <div className="flex-1 space-y-2">
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="p-2 rounded bg-white border">
-                      <span className="block text-gray-500">Mean Opacity</span>
-                      <strong style={{ color: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--text-primary)' }}>
-                        {(selectedZone.mean_intensity * 100).toFixed(1)}%
-                      </strong>
-                    </div>
-                    <div className="p-2 rounded bg-white border">
-                      <span className="block text-gray-500">Max Intensity</span>
-                      <strong>{(selectedZone.max_intensity * 100).toFixed(1)}%</strong>
-                    </div>
+                  {/* OpenCV Extracted Features */}
+                  <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
+                    DenseNet-121 Trained Features → Fed to QML Circuit
+                  </p>
+                  <div className="grid grid-cols-4 gap-1 text-[10px]">
+                    {selectedZone.cv_features && Object.entries(selectedZone.cv_features).map(([key, val]: [string, any]) => (
+                      <div key={key} className="p-1.5 rounded border text-center" style={{ background: 'var(--bg-secondary)' }}>
+                        <span className="block text-gray-500 font-bold capitalize">{key}</span>
+                        <strong style={{ color: val > 0.3 ? 'var(--accent-red)' : 'var(--text-primary)' }}>
+                          {(val * 100).toFixed(1)}%
+                        </strong>
+                      </div>
+                    ))}
                   </div>
                   
-                  <p className="text-xs p-2 rounded leading-relaxed" style={{ background: selectedZone.mean_intensity > 0.55 ? '#fee2e2' : 'var(--bg-secondary)', color: selectedZone.mean_intensity > 0.55 ? 'var(--accent-red)' : 'var(--text-secondary)' }}>
-                    {selectedZone.mean_intensity > 0.55 
-                      ? '⚠️ High opacity detected in this quadrant. Classical thresholds often miss early density changes here, but the quantum model flagged it based on localized mean intensity vs global background.'
-                      : '✅ Zone appears clear. Opacity within normal baseline limits.'}
-                  </p>
+                  {/* Actual QML Circuit Result */}
+                  <div className="p-3 rounded-lg border" style={{ 
+                    background: selectedZone.qml_zone_risk > 50 ? '#fef2f2' : 'var(--bg-secondary)', 
+                    borderColor: selectedZone.qml_zone_risk > 50 ? 'var(--accent-red)' : 'var(--border)' 
+                  }}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>
+                        8-Qubit QML Circuit Output
+                      </span>
+                      {selectedZone.qml_details?.severity && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ 
+                          background: selectedZone.qml_details.severity === 'NORMAL' ? '#dcfce7' : 
+                                     selectedZone.qml_details.severity === 'WARNING' ? '#fef3c7' : 
+                                     selectedZone.qml_details.severity === 'CRITICAL' ? '#fee2e2' : '#f1f5f9',
+                          color: selectedZone.qml_details.severity === 'NORMAL' ? '#166534' :
+                                 selectedZone.qml_details.severity === 'WARNING' ? '#92400e' :
+                                 selectedZone.qml_details.severity === 'CRITICAL' ? '#991b1b' : '#475569'
+                        }}>
+                          {selectedZone.qml_details.severity}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-end gap-3">
+                      <span className="text-2xl font-bold" style={{ color: selectedZone.qml_zone_risk > 50 ? 'var(--accent-red)' : 'var(--accent-green)' }}>
+                        {selectedZone.qml_zone_risk}%
+                      </span>
+                      {selectedZone.qml_details?.von_neumann_entropy != null && (
+                        <span className="text-[10px] mb-1" style={{ color: 'var(--text-muted)' }}>
+                          Entropy: {selectedZone.qml_details.von_neumann_entropy} bits
+                        </span>
+                      )}
+                      {selectedZone.qml_details?.confidence != null && (
+                        <span className="text-[10px] mb-1" style={{ color: 'var(--text-muted)' }}>
+                          Conf: {selectedZone.qml_details.confidence}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Per-Qubit Readings */}
+                  {selectedZone.qml_details?.per_qubit && selectedZone.qml_details.per_qubit.length > 0 && (
+                    <div className="grid grid-cols-4 gap-1 text-[9px]">
+                      {selectedZone.qml_details.per_qubit.map((q: any, i: number) => (
+                        <div key={i} className="p-1 rounded border text-center" style={{ 
+                          background: q.status === 'anomaly' ? '#fee2e2' : q.status === 'watch' ? '#fef3c7' : '#f0fdf4',
+                          borderColor: q.status === 'anomaly' ? '#fca5a5' : q.status === 'watch' ? '#fcd34d' : '#bbf7d0'
+                        }}>
+                          <span className="block font-bold">{q.label}</span>
+                          <span>Z={q.pauliz?.toFixed(3)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

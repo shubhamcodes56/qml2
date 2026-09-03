@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QML Analytics Platform</title>
-    <!-- Use Plotly.js for 3D/Heatmap rendering -->
+    <title>QML Analytics Platform — 8-Qubit (256-Dim)</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -13,17 +12,17 @@
 
     <header class="top-nav">
         <div class="logo">
-            <span class="logo-icon">⚛️</span> QML // QUANTUM STATE ANALYTICS
+            <span class="logo-icon">Q</span> QML // 8-QUBIT QUANTUM DIAGNOSTICS (256-DIM HILBERT SPACE)
         </div>
         <div class="patient-info">
-            Model: Quantum Entanglement <span>|</span> <span id="currentTime" class="time">00:00:00</span>
+            Architecture: 8Q | 22F | 4L | ZZ-Map | CNOT+CZ <span>|</span> <span id="currentTime" class="time">00:00:00</span>
         </div>
     </header>
 
     <!-- TAB NAVIGATION -->
     <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('tb-tab')">TB DIAGNOSTIC (16-Qubit)</button>
-        <button class="tab-btn" onclick="switchTab('icu-tab')">LIVE ICU MONITOR (4-Qubit)</button>
+        <button class="tab-btn active" onclick="switchTab('tb-tab')">TB DIAGNOSTIC (8-Qubit vs Classical)</button>
+        <button class="tab-btn" onclick="switchTab('icu-tab')">LIVE ICU MONITOR</button>
     </div>
 
     <!-- TAB 1: TB COMPARISON -->
@@ -35,13 +34,13 @@
             </div>
             
             <p class="instruction">
-                Click the button to simulate a <strong>Tier-1 Patient</strong> (early-stage TB where vitals are completely normal). Watch how Classical AI completely misses it, while Quantum Entanglement detects the hidden anomaly.
+                Click the button to simulate a <strong>Tier-1 Patient</strong> (early-stage TB where vitals are almost normal). Watch how Classical AI misses it, while Quantum Entanglement detects hidden feature correlations in 256-dimensional Hilbert Space.
             </p>
 
             <div class="tb-grid">
                 <!-- Patient Vitals Table -->
                 <div class="vitals-table-card">
-                    <h3>Patient Vitals (16 Features)</h3>
+                    <h3>Patient Vitals (22 Clinical Features)</h3>
                     <div id="vitalsGrid" class="vitals-grid">
                         <!-- Populated by JS -->
                     </div>
@@ -66,7 +65,7 @@
                     
                     <!-- Quantum ML -->
                     <div class="model-card quantum" id="quantumCard">
-                        <h3>Variational QML (8-Qubit)</h3>
+                        <h3>Quantum Circuit (8-Qubit)</h3>
                         <div class="risk-circle">
                             <svg viewBox="0 0 120 120">
                                 <circle class="bg" cx="60" cy="60" r="54"></circle>
@@ -81,22 +80,78 @@
                 </div>
             </div>
 
-            <!-- Qdrant Semantic Search -->
-            <div class="qdrant-panel">
-                <h3>Qdrant Vector Database: Similar Historical Patients</h3>
-                <div id="qdrantResults" class="qdrant-grid">
+            <!-- X-RAY QUANTUM FOCUS PANEL -->
+            <div class="xray-panel" id="xrayPanel" style="display:none;">
+                <h3>QUANTUM X-RAY ATTENTION MAP</h3>
+                <p class="instruction">The quantum circuit's ZZ-Feature Map creates entangled interactions between X-Ray scores. Below shows how much the circuit "focuses" on each X-Ray region based on angle magnitude x trained weight interaction.</p>
+                <div class="xray-grid">
+                    <div class="xray-region" id="xrayOpacity">
+                        <div class="xray-bar"><div class="xray-fill" id="xrayOpacityFill"></div></div>
+                        <span class="xray-label">OPACITY</span>
+                        <span class="xray-value" id="xrayOpacityVal">0%</span>
+                    </div>
+                    <div class="xray-region" id="xrayCavity">
+                        <div class="xray-bar"><div class="xray-fill" id="xrayCavityFill"></div></div>
+                        <span class="xray-label">CAVITY</span>
+                        <span class="xray-value" id="xrayCavityVal">0%</span>
+                    </div>
+                    <div class="xray-region" id="xrayNodule">
+                        <div class="xray-bar"><div class="xray-fill" id="xrayNoduleFill"></div></div>
+                        <span class="xray-label">NODULE</span>
+                        <span class="xray-value" id="xrayNoduleVal">0%</span>
+                    </div>
+                    <div class="xray-region" id="xrayPleural">
+                        <div class="xray-bar"><div class="xray-fill" id="xrayPleuralFill"></div></div>
+                        <span class="xray-label">PLEURAL</span>
+                        <span class="xray-value" id="xrayPleuralVal">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PER-QUBIT ANALYSIS -->
+            <div class="qubit-panel" id="qubitPanel" style="display:none;">
+                <h3>PER-QUBIT PauliZ MEASUREMENT (8 Qubits)</h3>
+                <p class="instruction">Each qubit encodes a different clinical domain. PauliZ value near -1 = anomaly detected. Near +1 = normal.</p>
+                <div class="qubit-grid" id="qubitGrid">
                     <!-- Populated by JS -->
                 </div>
             </div>
+
+            <!-- ZZ ENTANGLEMENT MAP -->
+            <div class="zz-panel" id="zzPanel" style="display:none;">
+                <h3>ZZ-FEATURE MAP ENTANGLEMENT INTERACTIONS</h3>
+                <p class="instruction">Genuine quantum entanglement strengths between feature pairs computed by the ZZ-Feature Map gates.</p>
+                <div class="zz-grid" id="zzGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- QUANTUM STATE VISUALIZATIONS -->
+            <div class="quantum-viz-row" id="vizRow" style="display:none;">
+                <div class="q-card">
+                    <div class="q-header">
+                        <h3>Density Matrix (32x32 Coherence Map)</h3>
+                        <p>Off-diagonal elements show quantum entanglement between feature groups</p>
+                    </div>
+                    <div class="plotly-container" id="tbDensityPlot"></div>
+                </div>
+                <div class="q-card">
+                    <div class="q-header">
+                        <h3>256-Dim Probability Landscape</h3>
+                        <p>Interference pattern across 256 Hilbert Space basis states</p>
+                    </div>
+                    <div class="plotly-container" id="tbProbPlot"></div>
+                </div>
+            </div>
+
         </section>
     </main>
 
     <!-- TAB 2: LIVE ICU MONITOR -->
     <main class="dashboard tab-content" id="icu-tab">
-        <!-- LEFT: Quantum Phase & State Visualization -->
         <section class="vitals-panel">
             <div class="panel-header">
-                <h2>QUANTUM HILBERT SPACE</h2>
+                <h2>QUANTUM HILBERT SPACE (256-DIM)</h2>
                 <div class="status-indicator">
                     <div class="status-dot green" id="classicalStatusDot"></div>
                     <span id="classicalStatusText">CLASSICAL VITALS: NORMAL</span>
@@ -104,7 +159,6 @@
             </div>
 
             <div class="quantum-viz-grid">
-                <!-- Density Matrix Heatmap -->
                 <div class="q-card">
                     <div class="q-header">
                         <h3>Density Matrix (Coherence)</h3>
@@ -112,12 +166,10 @@
                     </div>
                     <div class="plotly-container" id="densityMatrixPlot"></div>
                 </div>
-
-                <!-- Probability Amplitude Landscape -->
                 <div class="q-card">
                     <div class="q-header">
                         <h3>Probability Amplitude Landscape</h3>
-                        <p>Interference pattern across 16 basis states</p>
+                        <p>Interference pattern across 256 basis states</p>
                     </div>
                     <div class="plotly-container" id="probabilityPlot"></div>
                 </div>
@@ -128,11 +180,10 @@
                 <button id="btnReset" class="btn btn-secondary">RESET PATIENT</button>
             </div>
             <p class="instruction">
-                When Micro-Drift is injected, watch how the <strong>Density Matrix</strong> off-diagonals shift violently and the <strong>Interference Pattern</strong> peaks move to the anomaly state, proving QML detects the mathematical correlation drift before any single vital crosses a critical threshold.
+                When Micro-Drift is injected, watch how the <strong>Density Matrix</strong> off-diagonals shift and the <strong>Interference Pattern</strong> peaks move to the anomaly state. The QML detects mathematical correlation drift before any single vital crosses a critical threshold.
             </p>
         </section>
 
-        <!-- RIGHT: Algorithm Diagnostics -->
         <section class="qml-panel">
             <div class="panel-header qml-header">
                 <h2>ALGORITHM DIAGNOSTICS</h2>
@@ -142,7 +193,6 @@
                 </div>
             </div>
 
-            <!-- Risk Score Widget -->
             <div class="widget widget-risk" id="riskWidget">
                 <div class="risk-label">PROBABILITY OF SYSTEM FAILURE</div>
                 <div class="risk-circle">
@@ -157,19 +207,21 @@
                 <div class="severity-badge" id="severityBadge">NORMAL</div>
             </div>
 
-            <!-- Live Circuit Angles -->
             <div class="widget circuit-widget">
-                <h3>LIVE CIRCUIT ANGLES (θ)</h3>
-                <p class="subtitle">Angle Embedding (RY Gates)</p>
+                <h3>LIVE CIRCUIT ANGLES (8 Qubits)</h3>
+                <p class="subtitle">Multi-Pass Encoding: RY + RZ + RX</p>
                 <div class="angle-grid">
                     <div class="angle-item"><span>Q0 (HR)</span><br><b id="theta0">0.00</b></div>
                     <div class="angle-item"><span>Q1 (SpO2)</span><br><b id="theta1">0.00</b></div>
                     <div class="angle-item"><span>Q2 (RR)</span><br><b id="theta2">0.00</b></div>
                     <div class="angle-item"><span>Q3 (Temp)</span><br><b id="theta3">0.00</b></div>
+                    <div class="angle-item"><span>Q4 (WBC)</span><br><b id="theta4">0.00</b></div>
+                    <div class="angle-item"><span>Q5 (ESR)</span><br><b id="theta5">0.00</b></div>
+                    <div class="angle-item"><span>Q6 (CRP)</span><br><b id="theta6">0.00</b></div>
+                    <div class="angle-item"><span>Q7 (Lymph)</span><br><b id="theta7">0.00</b></div>
                 </div>
             </div>
 
-            <!-- Raw Vitals Feed -->
             <div class="widget terminal">
                 <div class="terminal-header">
                     <span>raw_vitals_stream.json</span>

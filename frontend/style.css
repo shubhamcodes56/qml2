@@ -24,7 +24,7 @@ body {
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
@@ -50,6 +50,8 @@ h2, h3 {
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0 rgba(255,255,255,0.1);
 }
+.btn-primary { border-color: var(--neon-blue); color: var(--neon-blue); }
+.btn-primary:hover { background: rgba(0,204,255,0.1); box-shadow: 4px 4px 0 var(--neon-blue); }
 .btn-danger { border-color: var(--neon-red); color: var(--neon-red); }
 .btn-danger:hover { background: rgba(255,34,68,0.1); box-shadow: 4px 4px 0 var(--neon-red); }
 .btn-secondary { border-color: var(--text-muted); }
@@ -63,8 +65,19 @@ h2, h3 {
     background: var(--bg-panel);
     border-bottom: 2px solid var(--border-color);
 }
-.logo { font-size: 1.2rem; font-weight: 800; color: var(--neon-blue); }
-.patient-info { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); }
+.logo { font-size: 1.1rem; font-weight: 800; color: var(--neon-blue); }
+.logo-icon { 
+    display: inline-block; 
+    background: var(--neon-purple); 
+    color: #fff; 
+    width: 28px; height: 28px; 
+    text-align: center; line-height: 28px; 
+    border-radius: 4px; 
+    font-weight: 800; 
+    margin-right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+}
+.patient-info { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); }
 
 /* Layout */
 .dashboard {
@@ -124,6 +137,7 @@ h2, h3 {
 .plotly-container {
     flex: 1;
     width: 100%;
+    min-height: 250px;
     position: relative;
     background: #000;
 }
@@ -160,8 +174,9 @@ h2, h3 {
 .terminal { align-items: flex-start; padding: 0; flex: 1; min-height: 150px; width: 100%; }
 .terminal-header { background: #222; width: 100%; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #888; border-bottom: 1px solid var(--border-color); }
 .terminal-content { padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #aaa; line-height: 1.4; overflow-y: auto; width: 100%; height: 100%; }
+
 /* =========================================
-   NEW TAB UI & COMPARISON STYLES
+   TAB UI
    ========================================= */
 .tab-nav {
     display: flex;
@@ -180,21 +195,10 @@ h2, h3 {
     border-bottom: 3px solid transparent;
     transition: all 0.3s;
 }
-.tab-btn:hover {
-    color: #fff;
-    background: #1e293b;
-}
-.tab-btn.active {
-    color: #38bdf8;
-    border-bottom-color: #38bdf8;
-    background: #1e293b;
-}
-.tab-content {
-    display: none;
-}
-.tab-content.active {
-    display: grid;
-}
+.tab-btn:hover { color: #fff; background: #1e293b; }
+.tab-btn.active { color: #38bdf8; border-bottom-color: #38bdf8; background: #1e293b; }
+.tab-content { display: none; }
+.tab-content.active { display: grid; }
 
 /* TB Panel */
 .full-panel {
@@ -202,6 +206,8 @@ h2, h3 {
     background: #0f172a;
     padding: 2rem;
     border-right: none;
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
 }
 .tb-grid {
     display: grid;
@@ -218,32 +224,21 @@ h2, h3 {
 .vitals-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: 1rem;
 }
 .vital-box {
     background: #0f172a;
-    padding: 1rem;
+    padding: 0.75rem;
     border-radius: 6px;
     border-left: 3px solid #10b981;
 }
 .vital-box.warning { border-left-color: #f59e0b; }
-.vital-box span {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.75rem;
-    margin-bottom: 0.25rem;
-}
-.vital-box b {
-    color: #fff;
-    font-size: 1.25rem;
-}
+.vital-box span { display: block; color: #94a3b8; font-size: 0.65rem; margin-bottom: 0.25rem; text-transform: uppercase; }
+.vital-box b { color: #fff; font-size: 1rem; }
 
 /* Comparison Cards */
-.comparison-cards {
-    display: flex;
-    gap: 1.5rem;
-}
+.comparison-cards { display: flex; gap: 1.5rem; }
 .model-card {
     flex: 1;
     background: #1e293b;
@@ -255,16 +250,9 @@ h2, h3 {
     align-items: center;
     text-align: center;
 }
-.model-card h3 {
-    margin-bottom: 1.5rem;
-    color: #cbd5e1;
-}
-.model-card.classical {
-    border-top: 4px solid #94a3b8;
-}
-.model-card.quantum {
-    border-top: 4px solid #8b5cf6;
-}
+.model-card h3 { margin-bottom: 1.5rem; color: #cbd5e1; }
+.model-card.classical { border-top: 4px solid #94a3b8; }
+.model-card.quantum { border-top: 4px solid #8b5cf6; }
 .diag-badge {
     margin-top: 1.5rem;
     padding: 0.5rem 1.5rem;
@@ -276,24 +264,139 @@ h2, h3 {
 .diag-badge.healthy { background: rgba(16,185,129,0.2); color: #10b981; }
 .diag-badge.danger { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; box-shadow: 0 0 15px rgba(239,68,68,0.4); }
 
-/* Qdrant Panel */
-.qdrant-panel {
+/* =========================================
+   X-RAY QUANTUM FOCUS PANEL
+   ========================================= */
+.xray-panel {
     margin-top: 2rem;
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 8px;
     padding: 1.5rem;
+    border-left: 4px solid var(--neon-red);
 }
-.qdrant-grid {
-    display: flex;
+.xray-panel h3 { color: var(--neon-red); margin-bottom: 0.5rem; }
+.xray-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     margin-top: 1rem;
 }
-.qdrant-card {
-    flex: 1;
+.xray-region { text-align: center; }
+.xray-bar {
+    height: 12px;
     background: #0f172a;
-    padding: 1rem;
     border-radius: 6px;
-    border: 1px solid #38bdf8;
-    border-left: 4px solid #38bdf8;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
 }
+.xray-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.8s ease, background 0.5s ease;
+    box-shadow: 0 0 8px currentColor;
+}
+.xray-label { display: block; color: #94a3b8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; }
+.xray-value { display: block; color: #fff; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; margin-top: 0.25rem; }
+
+/* =========================================
+   PER-QUBIT ANALYSIS PANEL
+   ========================================= */
+.qubit-panel {
+    margin-top: 1.5rem;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--neon-purple);
+}
+.qubit-panel h3 { color: var(--neon-purple); margin-bottom: 0.5rem; }
+.qubit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+.qubit-box {
+    background: #0f172a;
+    padding: 0.75rem;
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid #334155;
+    transition: all 0.3s ease;
+}
+.qubit-box.qubit-anomaly { border-color: var(--neon-red); box-shadow: 0 0 12px rgba(255,34,68,0.3); }
+.qubit-box.qubit-watch { border-color: var(--neon-yellow); }
+.qubit-box.qubit-normal { border-color: var(--neon-green); }
+.qubit-label { display: block; font-size: 0.7rem; color: var(--neon-blue); font-weight: 700; letter-spacing: 1px; }
+.qubit-z { display: block; font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 800; color: #fff; margin: 0.5rem 0; }
+.qubit-bar {
+    height: 6px;
+    background: #1e293b;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+.qubit-fill {
+    height: 100%;
+    background: var(--neon-purple);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+.qubit-status {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.qubit-anomaly .qubit-status { color: var(--neon-red); }
+.qubit-watch .qubit-status { color: var(--neon-yellow); }
+.qubit-normal .qubit-status { color: var(--neon-green); }
+
+/* =========================================
+   ZZ ENTANGLEMENT MAP
+   ========================================= */
+.zz-panel {
+    margin-top: 1.5rem;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--neon-blue);
+}
+.zz-panel h3 { color: var(--neon-blue); margin-bottom: 0.5rem; }
+.zz-grid { margin-top: 1rem; }
+.zz-item {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #1e293b;
+}
+.zz-pair { font-size: 0.75rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; }
+.zz-bar {
+    height: 8px;
+    background: #0f172a;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.zz-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+.zz-strength { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #fff; font-weight: 700; }
+
+/* =========================================
+   QUANTUM VIZ ROW (TB Tab Charts)
+   ========================================= */
+.quantum-viz-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+.quantum-viz-row .q-card { flex: 1; }
+.quantum-viz-row .plotly-container { min-height: 300px; }

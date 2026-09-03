@@ -79,6 +79,18 @@ def run_baseline(n_subset=300_000):
     os.makedirs(save_dir, exist_ok=True)
     with open(os.path.join(save_dir, "classical_baseline_results.json"), "w") as f:
         json.dump(results, f, indent=2)
+        
+    # Save the Random Forest model for live inference
+    import joblib
+    from sklearn.pipeline import Pipeline
+    rf_pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('rf', RandomForestClassifier(n_estimators=50, max_depth=10, n_jobs=-1, random_state=42))
+    ])
+    print("\n  Saving Random Forest Pipeline for live API usage...")
+    rf_pipeline.fit(X_all, y_all)
+    joblib.dump(rf_pipeline, os.path.join(save_dir, "rf_model.joblib"))
+    print("  Model saved to rf_model.joblib")
     
     print("\n" + "=" * 70)
     print("  INSIGHT: Compare Tier-1 & Tier-2 accuracy with QML results.")

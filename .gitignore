@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.venv/
+.env
+
+# Data and Models
+*.csv
+*.parquet
+*.pt
+*.npy
+backend/saved_model/
+
+# PPT Scripts
+backend/generate_pdf_pptx.py
+backend/populate_ppt.py
+backend/generate_hierarchical_flowchart.py
+backend/generate_flowchart.py
+backend/generate_solution_flowchart.py
+
+# OS
+.DS_Store
+Thumbs.db
