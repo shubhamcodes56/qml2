@@ -1,8 +1,11 @@
 pennylane
-torch
 fastapi
-uvicorn
-qdrant-client
+uvicorn[standard]
 scikit-learn
 numpy
 pydantic
+joblib
+google-generativeai
+Pillow
+python-multipart
+python-dotenv
