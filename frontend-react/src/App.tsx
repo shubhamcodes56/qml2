@@ -6,7 +6,7 @@ import AdvisoryPanel from './components/AdvisoryPanel'
 import XrayPanel from './components/XrayPanel'
 import TimelineView from './components/TimelineView'
 
-const API = 'http://localhost:8000'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 type TabId = 'timeline' | 'analysis'
 
 export default function App() {
